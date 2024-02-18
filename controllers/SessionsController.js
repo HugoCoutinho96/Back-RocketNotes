@@ -1,6 +1,8 @@
 const knex = require("../database/knex")
 const AppError = require("../utils/appError")
 const { compare } = require("bcryptjs")
+const authConfig = require("../configs/auth")
+const { sign } = require("jsonwebtoken")
 
 class SessionsController{
     async create(req, res){
@@ -17,7 +19,13 @@ class SessionsController{
             throw new AppError("Email ou senha não existe", 401)
         }
 
-        return res.json({user})
+        const { secret, expiresIn } = authConfig.jwt
+        const token = sign({}, secret, {
+            subject: String(user.id),
+            expiresIn
+        })
+
+        return res.json({user, token})
     }
 }
 
