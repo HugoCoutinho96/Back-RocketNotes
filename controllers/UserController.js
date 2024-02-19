@@ -21,11 +21,11 @@ class UserController{
         res.status(201).json()
     }
     async update(req, res){
-        const {id} = req.params
+        const user_id = req.user.id
         const {name, email, password, oldPassword} = req.body
         const dataBase = await sqliteConnection()
 
-        const user = await dataBase.get("select * from users where id = (?)", [id])
+        const user = await dataBase.get("select * from users where id = (?)", [user_id])
         if(!user)
             throw new appError("Usuário não existe!")
 
@@ -44,7 +44,7 @@ class UserController{
         user.email = email ?? user.email
         user.password = await hash(password, 8)
 
-        await dataBase.run("update users set name = (?), email = (?), password = (?) ,updated_at = datetime('now') where id = (?)", [user.name, user.email, user.password,id])
+        await dataBase.run("update users set name = (?), email = (?), password = (?) ,updated_at = datetime('now') where id = (?)", [user.name, user.email, user.password, user_id])
         res.json({})    
     }
     show(req,res){

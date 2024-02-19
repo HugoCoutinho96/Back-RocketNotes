@@ -2,6 +2,7 @@ const {Router} = require("express")
 const userRouter = Router()
 let UserController = require("../controllers/UserController")
 UserController = new UserController()
+const ensureAuthenticated = require("../middlewares/ensureAuthenticated")
 
 function myMiddleware(req, res, next){
     console.log("middleware funcionando")
@@ -12,6 +13,6 @@ userRouter.get("/:id/:user", UserController.show)
 
 userRouter.post("/",myMiddleware, UserController.create)
 
-userRouter.put("/:id", UserController.update)
+userRouter.put("/",  ensureAuthenticated, UserController.update)
 
 module.exports = userRouter
