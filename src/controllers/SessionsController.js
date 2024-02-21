@@ -5,7 +5,10 @@ const authConfig = require("../configs/auth")
 const { sign } = require("jsonwebtoken")
 
 class SessionsController{
+    
+    
     async create(req, res){
+        try{
         const {email, password} = req.body
 
         const user = await knex("users").where({email}).first()
@@ -26,6 +29,9 @@ class SessionsController{
         })
 
         return res.json({user, token})
+    }catch(error){
+        console.log(error)
+    }
     }
 }
 

@@ -3,12 +3,12 @@ const express = require("express")
 const app = express()
 const port = 3333
 
-const migrations = require("../database/sqllite/migrations")
+const migrations = require("./database/sqllite/migrations")
 migrations()
 
-const AppError = require("../utils/appError")
+const AppError = require("./utils/appError")
 
-const routes = require("../routes")
+const routes = require("./routes")
 app.use(express.json())
 app.use(routes)
 app.use((error, req, res, next) => {
