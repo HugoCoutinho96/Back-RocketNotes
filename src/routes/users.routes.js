@@ -4,15 +4,15 @@ let UserController = require("../controllers/UserController")
 UserController = new UserController()
 const ensureAuthenticated = require("../middlewares/ensureAuthenticated")
 
-function myMiddleware(req, res, next){
-    console.log("middleware funcionando")
-    next()
-}
+const multer = require("multer")
+const uploadsConfig = require("../configs/upload")
+const upload = multer(uploadsConfig.MULTER)
 
-userRouter.get("/:id/:user", UserController.show)
-
-userRouter.post("/",myMiddleware, UserController.create)
-
+userRouter.post("/", UserController.create)
 userRouter.put("/",  ensureAuthenticated, UserController.update)
+userRouter.patch("/avatar", ensureAuthenticated, upload.single("avatar"), (req, res) => {
+    console.log(req.file.filename)
+    res.json()
+})
 
 module.exports = userRouter

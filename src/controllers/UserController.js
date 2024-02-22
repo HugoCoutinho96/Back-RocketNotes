@@ -47,10 +47,6 @@ class UserController{
         await dataBase.run("update users set name = (?), email = (?), password = (?) ,updated_at = datetime('now') where id = (?)", [user.name, user.email, user.password, user_id])
         res.json({})    
     }
-    show(req,res){
-        const {id, user} = req.params
-        res.send(`id: ${id} | usuário: ${user}`)
-    }
 }
 
 module.exports = UserController
