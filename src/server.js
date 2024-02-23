@@ -3,12 +3,15 @@ const express = require("express")
 const app = express()
 const port = 3333
 
+const uploadsConfig = require("./configs/upload")
+
 const migrations = require("./database/sqllite/migrations")
 migrations()
 
 const AppError = require("./utils/appError")
-
 const routes = require("./routes")
+
+app.use("/files", express.static(uploadsConfig.UPLOADS_FOLDER))
 app.use(express.json())
 app.use(routes)
 app.use((error, req, res, next) => {

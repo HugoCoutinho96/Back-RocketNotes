@@ -6,10 +6,9 @@ const { fips } = require("crypto")
 class DiskStorage{
     async saveFile(file){
         await fs.promises.rename(
-            path.resolve(uploadsConfig.TMP_FOLDER, file)),
-            path.resolve(uploadsConfig.UPLOADS_FOLDER, file
+            path.resolve(uploadsConfig.TMP_FOLDER, file),
+            path.resolve(uploadsConfig.UPLOADS_FOLDER, file)
         )
-
         return file
     }
 
