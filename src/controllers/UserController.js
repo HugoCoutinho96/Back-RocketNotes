@@ -33,8 +33,11 @@ class UserController{
         if(emailExists && emailExists.id !== user.id)
             throw new appError("Email já cadastrado!")
 
-        if(password && !oldPassword)
+        if(!oldPassword)
             throw new appError("Senha antiga não foi informada!")
+
+        if(!password)
+            throw new appError("Nova senha não foi informada!")    
 
         const checkOldPassword = await compare(oldPassword, user.password)
         if(!checkOldPassword)
