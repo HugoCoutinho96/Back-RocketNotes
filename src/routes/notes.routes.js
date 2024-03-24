@@ -7,7 +7,7 @@ notesController = new notesController()
 
 noteRoutes.use(ensureAuthenticated)
 noteRoutes.post("/", notesController.create)
-noteRoutes.get("/", notesController.show)
+noteRoutes.get("/:id", notesController.show)
 noteRoutes.get("/", notesController.index)
 noteRoutes.delete("/", notesController.delete)
 
