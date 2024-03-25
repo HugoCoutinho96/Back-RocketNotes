@@ -32,7 +32,7 @@ class NotesController{
     }
 
     async show(req, res){
-        const {id} = req.body
+        const {id} = req.params
         const note = await knex("notes").where({id}).first()
 
         if(!note)
@@ -49,7 +49,7 @@ class NotesController{
     }
 
     async delete(req, res){
-        const {id} = req.body
+        const {id} = req.params
         await knex("notes").where({id}).delete()
         res.json()
     }
