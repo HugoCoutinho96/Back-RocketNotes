@@ -33,19 +33,16 @@ class UserController{
         if(emailExists && emailExists.id !== user.id)
             throw new appError("Email já cadastrado!")
 
-        if(!oldPassword)
-            throw new appError("Senha antiga não foi informada!")
-
-        if(!password)
-            throw new appError("Nova senha não foi informada!")    
-
-        const checkOldPassword = await compare(oldPassword, user.password)
-        if(!checkOldPassword)
-            throw new appError("Senha antiga errada!")
+        if(password && oldPassword){
+            const checkOldPassword = await compare(oldPassword, user.password)
+            if(!checkOldPassword)
+                throw new appError("Senha antiga errada!")
+            
+            user.password = await hash(password, 8)
+        }
 
         user.name = name ?? user.name
         user.email = email ?? user.email
-        user.password = await hash(password, 8)
 
         await dataBase.run("update users set name = (?), email = (?), password = (?) ,updated_at = datetime('now') where id = (?)", [user.name, user.email, user.password, user_id])
         res.json({})    
